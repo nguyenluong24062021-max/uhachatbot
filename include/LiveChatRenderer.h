@@ -21,6 +21,56 @@ enum AnimEngine : uint8_t {
     ENGINE_MAX
 };
 
+// Kawaii emotions (17 total)
+enum KawaiiEmotion : uint8_t {
+    KAWAII_NEUTRAL = 0,
+    KAWAII_HAPPY,
+    KAWAII_SAD,
+    KAWAII_ANGRY,
+    KAWAII_SURPRISED,
+    KAWAII_CONFUSED,
+    KAWAII_EXCITED,
+    KAWAII_TIRED,
+    KAWAII_CRYING,
+    KAWAII_LAUGHING,
+    KAWAII_LOVE,
+    KAWAII_WORRIED,
+    KAWAII_ANNOYED,
+    KAWAII_SHOCKED,
+    KAWAII_SHY,
+    KAWAII_SKEPTICAL,
+    KAWAII_DETERMINED
+};
+
+// BMO moods (25 total)
+enum BMOMood : uint8_t {
+    BMO_NEUTRAL = 0,
+    BMO_HAPPY,
+    BMO_SAD,
+    BMO_ANGRY,
+    BMO_SURPRISED,
+    BMO_CONFUSED,
+    BMO_EXCITED,
+    BMO_TIRED,
+    BMO_WORRIED,
+    BMO_ANNOYED,
+    BMO_LOVE,
+    BMO_SCARED,
+    BMO_PROUD,
+    BMO_SILLY,
+    BMO_SLEEPY,
+    BMO_THINKING,
+    BMO_SKEPTICAL,
+    BMO_DETERMINED,
+    BMO_PLAYFUL,
+    BMO_BORED,
+    BMO_FOCUSED,
+    BMO_DIZZY,
+    BMO_WINK,
+    BMO_EMBARRASSED,
+    BMO_CURIOUS
+};
+
 // Cấu hình emotion cho từng trạng thái
 struct EmotionConfig {
     AnimEngine engine;
@@ -104,12 +154,35 @@ private:
     uint8_t _blinkCounter;
     int16_t _lookX, _lookY;
     
+    // Kawaii engine state
+    KawaiiEmotion _kawaiiEmotion;
+    uint8_t _kawaiiTearLevel;      // 0-10 for crying
+    uint8_t _kawaiiSparkleLevel;   // 0-10 for excitement
+    uint8_t _kawaiiJawTremble;     // 0-10 for fear/anger
+    
+    // BMO engine state
+    BMOMood _bmoMood;
+    float _bmoMouthOpen;           // 0.0-1.0 for lip sync
+    uint8_t _bmoMouthShape;        // 0-4 different mouth shapes
+    
     // Engine-specific rendering
     void renderGrobot();
     void renderKawaii();
     void renderBMO();
     void renderMochi();
     void renderEyes();
+    
+    // Kawaii helper functions
+    void drawKawaiiEyes(int16_t cx, int16_t cy, KawaiiEmotion emotion);
+    void drawKawaiiMouth(int16_t cx, int16_t cy, KawaiiEmotion emotion);
+    void drawKawaiiBlush(int16_t cx, int16_t cy, KawaiiEmotion emotion);
+    void drawKawaiiTears(int16_t cx, int16_t cy, uint8_t level);
+    void drawKawaiiSparkles(int16_t cx, int16_t cy, uint8_t level);
+    
+    // BMO helper functions
+    void drawBMOEyes(int16_t cx, int16_t cy, BMOMood mood);
+    void drawBMOMouth(int16_t cx, int16_t cy, BMOMood mood, float openness);
+    void drawBMOAccessory(int16_t cx, int16_t cy, BMOMood mood);
     
     // State-specific overlays
     void renderListeningOverlay();
