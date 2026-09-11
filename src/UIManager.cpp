@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "FaceRenderer.h"
 #include "MenuApp.h"
+#include "LiveChatRenderer.h"
 #include <TFT_eSPI.h>
 
 extern TFT_eSPI tft;
@@ -15,6 +16,7 @@ extern void refreshStatsText();
 static void enterMenu() {
     _mode = MODE_MENU;
     pauseFace();
+    liveChatRenderer.pause();
     tft.fillScreen(TFT_BLACK);
     gslc_SetPageCur(&m_gui, MENU_PG_ROOT);
     gslc_PageRedrawSet(&m_gui, true);   // force full redraw on entry
@@ -27,6 +29,25 @@ static void exitMenu() {
     tft.fillScreen(config.bgColour);
     resetFaceState();
     resumeFace();
+    liveChatRenderer.pause();
+}
+
+static void enterLiveChat() {
+    _mode = MODE_LIVECHAT;
+    pauseFace();
+    tft.fillScreen(TFT_BLACK);
+    liveChatRenderer.resume();
+    liveChatRenderer.setState(CHAT_IDLE);
+    Serial.println("OK: entered LIVECHAT mode");
+}
+
+static void exitLiveChat() {
+    _mode = MODE_FACE;
+    liveChatRenderer.pause();
+    tft.fillScreen(config.bgColour);
+    resetFaceState();
+    resumeFace();
+    Serial.println("OK: exited LIVECHAT mode");
 }
 
 void initUI() {
@@ -41,6 +62,16 @@ void serviceUI() {
     if (gotEvent && ev.kind == TOUCH_LONG_PRESS && _mode == MODE_FACE) {
         enterMenu();
         Serial.println("OK: entered MENU");
+    }
+
+    // Double-tap from face to enter LiveChat mode
+    if (gotEvent && ev.kind == TOUCH_TAP && _mode == MODE_FACE) {
+        static uint32_t lastTapMs = 0;
+        uint32_t now = millis();
+        if (now - lastTapMs < 500) {  // Double tap trong 500ms
+            enterLiveChat();
+        }
+        lastTapMs = now;
     }
 
     if (_mode == MODE_MENU) {
@@ -66,6 +97,28 @@ void serviceUI() {
 
         gslc_Update(&m_gui);
     }
+    
+    if (_mode == MODE_LIVECHAT) {
+        // Tap để interrupt bot khi đang speaking
+        if (gotEvent && ev.kind == TOUCH_TAP) {
+            if (liveChatRenderer.getState() == CHAT_SPEAKING) {
+                liveChatRenderer.onInterrupt();
+                Serial.println("OK: interrupted bot");
+            } else if (liveChatRenderer.getState() == CHAT_IDLE) {
+                // Tap trong idle mode -> bắt đầu listening
+                liveChatRenderer.setState(CHAT_LISTENING);
+                Serial.println("OK: started listening");
+            }
+        }
+        
+        // Long press để exit LiveChat
+        if (gotEvent && ev.kind == TOUCH_LONG_PRESS) {
+            exitLiveChat();
+        }
+        
+        // Update LiveChat renderer
+        serviceLiveChat();
+    }
 }
 
 UIMode getUIMode() { return _mode; }
@@ -73,10 +126,21 @@ UIMode getUIMode() { return _mode; }
 void setUIMode(UIMode m) {
     if (m == MODE_MENU && _mode == MODE_FACE) enterMenu();
     else if (m == MODE_FACE && _mode == MODE_MENU) exitMenu();
+    else if (m == MODE_LIVECHAT && _mode == MODE_FACE) enterLiveChat();
+    else if (m == MODE_FACE && _mode == MODE_LIVECHAT) exitLiveChat();
+    else if (m == MODE_MENU && _mode == MODE_LIVECHAT) {
+        exitLiveChat();
+        enterMenu();
+    }
+    else if (m == MODE_LIVECHAT && _mode == MODE_MENU) {
+        exitMenu();
+        enterLiveChat();
+    }
 }
 
 void menuBack() {
     if (_mode == MODE_MENU) exitMenu();
+    else if (_mode == MODE_LIVECHAT) exitLiveChat();
 }
 
 bool menuSelect(uint8_t idx) {
@@ -95,10 +159,17 @@ void cmdMenuState() {
 }
 
 void printMode() {
-    Serial.printf("mode:           %s\n", _mode == MODE_FACE ? "FACE" : "MENU");
+    const char* modeName = "UNKNOWN";
+    if (_mode == MODE_FACE) modeName = "FACE";
+    else if (_mode == MODE_MENU) modeName = "MENU";
+    else if (_mode == MODE_LIVECHAT) modeName = "LIVECHAT";
+    Serial.printf("mode:           %s\n", modeName);
 }
 
 void printMenuState() {
-    Serial.printf("menu:           %s (GUIslice-driven)\n",
-                  _mode == MODE_MENU ? "MENU" : "FACE");
+    const char* stateName = "UNKNOWN";
+    if (_mode == MODE_FACE) stateName = "FACE";
+    else if (_mode == MODE_MENU) stateName = "MENU (GUIslice-driven)";
+    else if (_mode == MODE_LIVECHAT) stateName = "LIVECHAT";
+    Serial.printf("menu:           %s\n", stateName);
 }

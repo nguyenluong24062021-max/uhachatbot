@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-enum UIMode : uint8_t { MODE_FACE, MODE_MENU };
+enum UIMode : uint8_t { MODE_FACE, MODE_MENU, MODE_LIVECHAT };
 
 void initUI();
 void serviceUI();

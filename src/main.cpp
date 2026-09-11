@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "UIManager.h"
 #include "MenuApp.h"
+#include "LiveChatRenderer.h"
 #include "version.h"
 
 static CydTouchHandler m_touch;
@@ -36,16 +37,21 @@ void setup() {
     reattachBacklight(); // restore PWM control of backlight
     initMenuIcons();
     m_gui.bTouchRemapYX = true;    // BAT BUOC true — da xac nhan qua do thuc te (guirot=1 + remap=true la to hop dung, xem TouchHandler.h)
+    
+    // Init LiveChat renderer
+    extern TFT_eSPI tft;
+    initLiveChat(&tft);
+    
     initUI(); // _mode = FACE
 //    setupLed();
-    Serial.println("RSC ready");
+    Serial.println("RSC ready (with LiveChat)");
 }
 
 void loop() {
     serviceConfig();
     serviceNvs();
     if (getUIMode() == MODE_FACE) serviceFaceRenderer();
-    serviceUI();              // mode-orchestrates GUIslice + long-press
+    serviceUI();              // mode-orchestrates GUIslice + long-press + LiveChat
     serviceDebugOverlay();
 //    serviceLdr();
 }
