@@ -398,25 +398,25 @@ static void cmdAnimError() {
     Serial.println("OK: animation ERROR");
 }
 
-static void cmdEngineSimple() {
-    setEmotionEngine(ENGINE_SIMPLE);
-    Serial.println("OK: engine SIMPLE (minimal, 20KB RAM)");
+static void cmdEngineGrobot() {
+    setEmotionEngine(ENGINE_GROBOT);
+    Serial.println("OK: engine GROBOT (Grobot_Animations library)");
 }
 static void cmdEngineKawaii() {
     setEmotionEngine(ENGINE_KAWAII);
-    Serial.println("OK: engine KAWAII (anime cute, 40KB RAM)");
+    Serial.println("OK: engine KAWAII (lvgl kawaii style)");
+}
+static void cmdEngineBMO() {
+    setEmotionEngine(ENGINE_BMO);
+    Serial.println("OK: engine BMO (BMO-ESP32 retro style)");
 }
 static void cmdEngineMochi() {
     setEmotionEngine(ENGINE_MOCHI);
-    Serial.println("OK: engine MOCHI (bouncy blob, 50KB RAM)");
+    Serial.println("OK: engine MOCHI (cute blob style)");
 }
-static void cmdEngineGrobot() {
-    setEmotionEngine(ENGINE_GROBOT);
-    Serial.println("OK: engine GROBOT (professional, 70KB RAM)");
-}
-static void cmdEngineGeo() {
-    setEmotionEngine(ENGINE_GEOMETRIC);
-    Serial.println("OK: engine GEOMETRIC (abstract, 35KB RAM)");
+static void cmdEngineEyes() {
+    setEmotionEngine(ENGINE_EYES);
+    Serial.println("OK: engine EYES (esp32-eyes realistic)");
 }
 
 static void cmdLiveChat() {
@@ -488,17 +488,17 @@ static const Command commands[] = {
     {"mem",          nullptr,           cmdMem,            "memory snapshot",                                                   fmtMem},
     
     // LiveChat Animation Test Commands
-    {"livechat",     nullptr,           cmdLiveChat,       "enter LiveChat mode"},
-    {"idle",         nullptr,           cmdAnimIdle,       "test IDLE animation"},
-    {"listen",       nullptr,           cmdAnimListen,     "test LISTENING animation"},
-    {"think",        nullptr,           cmdAnimThink,      "test THINKING animation"},
-    {"speak",        nullptr,           cmdAnimSpeak,      "test SPEAKING animation"},
-    {"error",        nullptr,           cmdAnimError,      "test ERROR animation"},
-    {"engine_simple", nullptr,          cmdEngineSimple,   "switch to SIMPLE engine (20KB)"},
-    {"engine_kawaii", nullptr,          cmdEngineKawaii,   "switch to KAWAII engine (40KB)"},
-    {"engine_mochi",  nullptr,          cmdEngineMochi,    "switch to MOCHI engine (50KB)"},
-    {"engine_grobot", nullptr,          cmdEngineGrobot,   "switch to GROBOT engine (70KB)"},
-    {"engine_geo",    nullptr,          cmdEngineGeo,      "switch to GEOMETRIC engine (35KB)"},
+    {"livechat",      nullptr,          cmdLiveChat,       "enter LiveChat mode"},
+    {"idle",          nullptr,          cmdAnimIdle,       "test IDLE animation"},
+    {"listen",        nullptr,          cmdAnimListen,     "test LISTENING animation"},
+    {"think",         nullptr,          cmdAnimThink,      "test THINKING animation"},
+    {"speak",         nullptr,          cmdAnimSpeak,      "test SPEAKING animation"},
+    {"error",         nullptr,          cmdAnimError,      "test ERROR animation"},
+    {"engine_grobot", nullptr,          cmdEngineGrobot,   "switch to GROBOT engine (Grobot_Animations)"},
+    {"engine_kawaii", nullptr,          cmdEngineKawaii,   "switch to KAWAII engine (lvgl kawaii)"},
+    {"engine_bmo",    nullptr,          cmdEngineBMO,      "switch to BMO engine (retro style)"},
+    {"engine_mochi",  nullptr,          cmdEngineMochi,    "switch to MOCHI engine (cute blob)"},
+    {"engine_eyes",   nullptr,          cmdEngineEyes,     "switch to EYES engine (realistic)"},
 };
 
 static const size_t COMMAND_COUNT = sizeof(commands) / sizeof(commands[0]);

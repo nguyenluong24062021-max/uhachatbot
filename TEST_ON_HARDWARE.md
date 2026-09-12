@@ -84,24 +84,24 @@ OK: animation SPEAKING
 ### 🎨 Chuyển Đổi Emotion Engine
 
 ```
-engine_simple     # SIMPLE engine (20KB RAM, nhanh nhất)
-engine_kawaii     # KAWAII engine (40KB RAM, anime cute)
-engine_mochi      # MOCHI engine (50KB RAM, bouncy blob)
-engine_grobot     # GROBOT engine (70KB RAM, professional)
-engine_geo        # GEOMETRIC engine (35KB RAM, abstract)
+engine_grobot     # GROBOT engine (Grobot_Animations library)
+engine_kawaii     # KAWAII engine (lvgl kawaii style)
+engine_bmo        # BMO engine (BMO-ESP32 retro style)
+engine_mochi      # MOCHI engine (Mochi cute blob)
+engine_eyes       # EYES engine (esp32-eyes realistic)
 ```
 
 **Ví dụ:**
 ```
 > engine_kawaii
-OK: engine KAWAII (anime cute, 40KB RAM)
+OK: engine KAWAII (lvgl kawaii style)
 
 > speak
 OK: animation SPEAKING
 (Bây giờ bạn sẽ thấy speaking animation theo style Kawaii)
 
 > engine_mochi
-OK: engine MOCHI (bouncy blob, 50KB RAM)
+OK: engine MOCHI (cute blob style)
 
 > speak
 OK: animation SPEAKING
@@ -129,19 +129,19 @@ idle
 
 ```
 livechat
-engine_simple
+engine_grobot
 speak
 
 engine_kawaii
 speak
 
+engine_bmo
+speak
+
 engine_mochi
 speak
 
-engine_grobot
-speak
-
-engine_geo
+engine_eyes
 speak
 ```
 
@@ -164,13 +164,13 @@ idle
 
 ## 📊 BẢNG SO SÁNH ENGINES
 
-| Engine | RAM | FPS | Smoothness | Style | Khi nào dùng |
-|--------|-----|-----|------------|-------|--------------|
-| **simple** | 20KB | ⚡⚡⚡⚡⚡ | ⭐⭐⭐⭐⭐ | Tối giản | RAM ít, cần tốc độ |
-| **geo** | 35KB | ⚡⚡⚡⚡ | ⭐⭐⭐⭐ | Hiện đại | Tech/abstract UI |
-| **kawaii** | 40KB | ⚡⚡⚡⚡ | ⭐⭐⭐⭐ | Dễ thương | Friendly/cute UI |
-| **mochi** | 50KB | ⚡⚡⚡ | ⭐⭐⭐ | Vui nhộn | Interactive/fun |
-| **grobot** | 70KB | ⚡⚡⭐ | ⭐⭐⭐ | Chuyên nghiệp | Chất lượng cao nhất |
+| Engine | Style | Nguồn | Đặc điểm |
+|--------|-------|-------|----------|
+| **grobot** | Grobot | Grobot_Animations library | Pre-made animations, chuyên nghiệp |
+| **kawaii** | Anime | lvgl_kawaii_face style | Cute, emoji kawaii |
+| **bmo** | Retro | BMO-ESP32 style | Pixel art, retro gaming |
+| **mochi** | Blob | Mochi cute blob | Physics simulation, bouncy |
+| **eyes** | Realistic | esp32-eyes | Realistic eye movements |
 
 ---
 
@@ -190,11 +190,11 @@ Bạn sẽ thấy tất cả lệnh bao gồm:
 - `think` - Test THINKING animation
 - `speak` - Test SPEAKING animation
 - `error` - Test ERROR animation
-- `engine_simple` - Switch to SIMPLE engine
-- `engine_kawaii` - Switch to KAWAII engine
-- `engine_mochi` - Switch to MOCHI engine
 - `engine_grobot` - Switch to GROBOT engine
-- `engine_geo` - Switch to GEOMETRIC engine
+- `engine_kawaii` - Switch to KAWAII engine
+- `engine_bmo` - Switch to BMO engine
+- `engine_mochi` - Switch to MOCHI engine
+- `engine_eyes` - Switch to EYES engine
 
 **Plus các lệnh khác:**
 - `mode:FACE` - Quay về Face mode

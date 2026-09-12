@@ -13,11 +13,11 @@ error     - Lỗi
 
 ### Engines (Phong cách)
 ```
-simple    - Đơn giản, nhẹ nhất (20KB RAM)
-kawaii    - Anime cute (40KB RAM)
-mochi     - Blob bouncy (50KB RAM)
-grobot    - Professional (70KB RAM)
-geo       - Geometric abstract (35KB RAM)
+engine_grobot    - Grobot_Animations library
+engine_kawaii    - lvgl kawaii style
+engine_bmo       - BMO-ESP32 retro style
+engine_mochi     - Mochi cute blob
+engine_eyes      - esp32-eyes realistic
 ```
 
 ### Khác
