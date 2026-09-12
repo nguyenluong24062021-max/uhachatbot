@@ -11,6 +11,7 @@
 #include "TouchCalib.h"
 #include "TouchTest.h"
 #include "MenuApp.h"   // m_gui — cho phep dieu chinh GUIslice rotation/remap qua Serial
+#include "LiveChatRenderer.h"  // Animation test commands
 
 extern TFT_eSPI tft;
 
@@ -372,6 +373,57 @@ static void cmdSplash()     { showSplash(); Serial.println("OK"); }
 static void cmdPause()      { pauseFace();  Serial.println("OK: face paused"); }
 static void cmdResume()     { resumeFace(); Serial.println("OK: face resumed"); }
 
+// ============ LiveChat Animation Commands ============
+extern void setLiveChatState(ChatState state);
+extern void setEmotionEngine(AnimEngine engine);
+
+static void cmdAnimIdle() {
+    setLiveChatState(CHAT_IDLE);
+    Serial.println("OK: animation IDLE");
+}
+static void cmdAnimListen() {
+    setLiveChatState(CHAT_LISTENING);
+    Serial.println("OK: animation LISTENING");
+}
+static void cmdAnimThink() {
+    setLiveChatState(CHAT_THINKING);
+    Serial.println("OK: animation THINKING");
+}
+static void cmdAnimSpeak() {
+    setLiveChatState(CHAT_SPEAKING);
+    Serial.println("OK: animation SPEAKING");
+}
+static void cmdAnimError() {
+    setLiveChatState(CHAT_INTERRUPTED);
+    Serial.println("OK: animation ERROR");
+}
+
+static void cmdEngineSimple() {
+    setEmotionEngine(ENGINE_SIMPLE);
+    Serial.println("OK: engine SIMPLE (minimal, 20KB RAM)");
+}
+static void cmdEngineKawaii() {
+    setEmotionEngine(ENGINE_KAWAII);
+    Serial.println("OK: engine KAWAII (anime cute, 40KB RAM)");
+}
+static void cmdEngineMochi() {
+    setEmotionEngine(ENGINE_MOCHI);
+    Serial.println("OK: engine MOCHI (bouncy blob, 50KB RAM)");
+}
+static void cmdEngineGrobot() {
+    setEmotionEngine(ENGINE_GROBOT);
+    Serial.println("OK: engine GROBOT (professional, 70KB RAM)");
+}
+static void cmdEngineGeo() {
+    setEmotionEngine(ENGINE_GEOMETRIC);
+    Serial.println("OK: engine GEOMETRIC (abstract, 35KB RAM)");
+}
+
+static void cmdLiveChat() {
+    setUIMode(MODE_LIVECHAT);
+    Serial.println("OK: entered LIVECHAT mode");
+}
+
 // Forward decls for cmds that iterate the table
 static void cmdHelp();
 static void cmdStatus();
@@ -434,6 +486,19 @@ static const Command commands[] = {
     {"bright",       cmdSetBright,      cmdGetBright,      "0-100 backlight %",                                                 fmtBright},
     {"uptime",       nullptr,           cmdUptime,         "time since boot",                                                   fmtUptime},
     {"mem",          nullptr,           cmdMem,            "memory snapshot",                                                   fmtMem},
+    
+    // LiveChat Animation Test Commands
+    {"livechat",     nullptr,           cmdLiveChat,       "enter LiveChat mode"},
+    {"idle",         nullptr,           cmdAnimIdle,       "test IDLE animation"},
+    {"listen",       nullptr,           cmdAnimListen,     "test LISTENING animation"},
+    {"think",        nullptr,           cmdAnimThink,      "test THINKING animation"},
+    {"speak",        nullptr,           cmdAnimSpeak,      "test SPEAKING animation"},
+    {"error",        nullptr,           cmdAnimError,      "test ERROR animation"},
+    {"engine_simple", nullptr,          cmdEngineSimple,   "switch to SIMPLE engine (20KB)"},
+    {"engine_kawaii", nullptr,          cmdEngineKawaii,   "switch to KAWAII engine (40KB)"},
+    {"engine_mochi",  nullptr,          cmdEngineMochi,    "switch to MOCHI engine (50KB)"},
+    {"engine_grobot", nullptr,          cmdEngineGrobot,   "switch to GROBOT engine (70KB)"},
+    {"engine_geo",    nullptr,          cmdEngineGeo,      "switch to GEOMETRIC engine (35KB)"},
 };
 
 static const size_t COMMAND_COUNT = sizeof(commands) / sizeof(commands[0]);
