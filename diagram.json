@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-ili9341",
+      "id": "lcd",
+      "top": -36.67,
+      "left": 178.78,
+      "attrs": { "width": "240", "height": "320" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "lcd:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "lcd:VCC", "esp:VIN", "red", [ "v0" ] ],
+    [ "lcd:SCK", "esp:D25", "blue", [ "v0" ] ],
+    [ "lcd:SDI", "esp:D26", "green", [ "v0" ] ],
+    [ "lcd:SDO", "esp:D34", "gray", [ "v0" ] ],
+    [ "lcd:CS", "esp:D13", "orange", [ "v0" ] ],
+    [ "lcd:D/C", "esp:D27", "purple", [ "v0" ] ],
+    [ "lcd:RST", "esp:D14", "white", [ "v0" ] ],
+    [ "lcd:LED", "esp:D12", "yellow", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}

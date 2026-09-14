@@ -1049,3 +1049,7 @@ void setLiveChatState(ChatState state) {
 ChatState getLiveChatState() {
     return liveChatRenderer.getState();
 }
+
+void setEmotionEngine(AnimEngine engine) {
+    liveChatRenderer.setEngine(engine);
+}

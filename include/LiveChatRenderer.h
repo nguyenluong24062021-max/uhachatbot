@@ -211,3 +211,4 @@ void initLiveChat(TFT_eSPI* tft);
 void serviceLiveChat();
 void setLiveChatState(ChatState state);
 ChatState getLiveChatState();
+void setEmotionEngine(AnimEngine engine);

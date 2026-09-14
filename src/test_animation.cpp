@@ -36,12 +36,12 @@ void setup() {
     Serial.println("  listen    - Test Listening animation");
     Serial.println("  think     - Test Thinking animation");
     Serial.println("  speak     - Test Speaking animation");
-    Serial.println("  error     - Test Error animation");
+    Serial.println("  error     - Test Interrupted animation");
     Serial.println("  kawaii    - Chuyển sang Kawaii engine");
     Serial.println("  mochi     - Chuyển sang Mochi engine");
     Serial.println("  grobot    - Chuyển sang Grobot engine");
-    Serial.println("  simple    - Chuyển sang Simple engine");
-    Serial.println("  geo       - Chuyển sang Geometric engine");
+    Serial.println("  bmo       - Chuyển sang BMO engine");
+    Serial.println("  eyes      - Chuyển sang Eyes engine");
     Serial.println("  clear     - Xóa màn hình");
     Serial.println("  help      - Hiển thị menu này");
     Serial.println("\n💡 Gõ lệnh và nhấn Enter để test!\n");
@@ -85,34 +85,34 @@ void loop() {
                     setLiveChatState(CHAT_SPEAKING);
                     
                 } else if (cmd == "error") {
-                    Serial.println("❌ Testing ERROR animation...");
-                    currentState = CHAT_ERROR;
-                    setLiveChatState(CHAT_ERROR);
+                    Serial.println("❌ Testing INTERRUPTED animation...");
+                    currentState = CHAT_INTERRUPTED;
+                    setLiveChatState(CHAT_INTERRUPTED);
                     
                 } else if (cmd == "kawaii") {
                     Serial.println("🌸 Switching to KAWAII engine...");
-                    setEmotionEngine(ENGINE_KAWAII);
+                    liveChatRenderer.setEngine(ENGINE_KAWAII);
                     Serial.println("   Kawaii: Anime-style với emoji kawaii");
                     
                 } else if (cmd == "mochi") {
                     Serial.println("🫧 Switching to MOCHI engine...");
-                    setEmotionEngine(ENGINE_MOCHI);
+                    liveChatRenderer.setEngine(ENGINE_MOCHI);
                     Serial.println("   Mochi: Bouncy blob với physics");
                     
                 } else if (cmd == "grobot") {
                     Serial.println("🤖 Switching to GROBOT engine...");
-                    setEmotionEngine(ENGINE_GROBOT);
+                    liveChatRenderer.setEngine(ENGINE_GROBOT);
                     Serial.println("   Grobot: Animations từ Grobot library");
                     
-                } else if (cmd == "simple") {
-                    Serial.println("⚪ Switching to SIMPLE engine...");
-                    setEmotionEngine(ENGINE_SIMPLE);
-                    Serial.println("   Simple: Basic shapes, ít RAM");
+                } else if (cmd == "bmo") {
+                    Serial.println("🎮 Switching to BMO engine...");
+                    liveChatRenderer.setEngine(ENGINE_BMO);
+                    Serial.println("   BMO: Retro game console style");
                     
-                } else if (cmd == "geo") {
-                    Serial.println("📐 Switching to GEOMETRIC engine...");
-                    setEmotionEngine(ENGINE_GEOMETRIC);
-                    Serial.println("   Geometric: Abstract geometric patterns");
+                } else if (cmd == "eyes") {
+                    Serial.println("👀 Switching to EYES engine...");
+                    liveChatRenderer.setEngine(ENGINE_EYES);
+                    Serial.println("   Eyes: Realistic eye movements");
                     
                 } else if (cmd == "clear") {
                     Serial.println("🧹 Clearing screen...");
@@ -121,7 +121,7 @@ void loop() {
                 } else if (cmd == "help") {
                     Serial.println("\n📝 HELP - Available commands:");
                     Serial.println("  STATES: idle, listen, think, speak, error");
-                    Serial.println("  ENGINES: kawaii, mochi, grobot, simple, geo");
+                    Serial.println("  ENGINES: kawaii, mochi, grobot, bmo, eyes");
                     Serial.println("  OTHER: clear, help");
                     
                 } else {
@@ -139,7 +139,7 @@ void loop() {
     
     // Update animation mỗi 50ms
     if (millis() - lastAnimTime >= 50) {
-        updateLiveChat();
+        serviceLiveChat();
         lastAnimTime = millis();
     }
     
